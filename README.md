@@ -56,15 +56,12 @@ Additional OS-specific details and installation commands can be found in the hea
 ## Running the Program
 
 ### GUI (Recommended)
-
 To launch the interactive GUI, navigate to the repository directory and run:
-
 ```bash
 cd path/to/the/repository      
 python3 tdc_jitter_gui_def.py
 
 ```
-
 The GUI provides text boxes, drop-down menus, and sliders to adjust simulation parameters, change numeric values, and activate optional features or non-idealities.
 
 1. The main window opens with pre-filled default parameters.
@@ -75,7 +72,6 @@ The GUI provides text boxes, drop-down menus, and sliders to adjust simulation p
 **Note:** The MC pseudo-random number generator uses a fixed seed (`SEED = 12345`). Executing the simulation multiple times with identical settings will yield identical numerical results. To simulate a different random realization, change the `SEED` variable inside `tdc_jitter_sim_def.py`.
 
 ### Standalone Engine
-
 The core simulation script (`tdc_jitter_sim_def.py`) can also be executed independently without the graphical interface:
 
 1. Open `tdc_jitter_sim_def.py` in a text editor and modify the configuration variables within the `PARAMETERS` block at the top of the file. Clock frequencies must be specified in **Hertz** (e.g., `F_CLK = 400e6` for $400\text{ MHz}$).
@@ -92,7 +88,6 @@ Below is a detailed breakdown of the configurable simulation parameters and thei
 
 ### Clock Frequency (`F_CLK`)
 The number of clock ticks per second ($f_{\text{CLK}}$). The clock period ($T_{\text{CLK}} = 1 / f_{\text{CLK}}$) defines the interval between two consecutive ticks. The coarse stage counts these clock cycles to establish the primary timestamp.
-
 
 ### Random Clock Jitter (`SIGMA_RJ`)
 The root-mean-square ($\sigma_{\text{RJ}}$) magnitude of the random temporal displacement of clock edges from their ideal arrival times, expressed in picoseconds ($\text{ps}$). 
@@ -211,16 +206,13 @@ The horizontal axis indicates normalized frequency (cycles per measurement, span
 This analysis allows to identify periodic oscillations or deterministic noise patterns embedded within the measurement error sequence.
 
 ## Analytical Prediction Model
-
 The simulation report compares empirical MC results against a theoretical **analytical error budget**:
 
 $$\sigma_{\text{TOT}} = \sqrt{\sigma_{\text{RJ}}^2 + \sigma_{\text{DCD}}^2 + \sigma_q^2}$$
 
 The individual variance components are summed in quadrature because the underlying error mechanisms are statistically independent (RSS model).
 
-
 ### Step-by-Step Simulation Workflow
-
 1. **Jittered Clock Generation:** Rising clock edges arrive at timestamps $t_k = k \cdot T_{\text{CLK}} + \varphi(k)$, where $\varphi(k)$ represents edge displacement composed of white phase noise, random-walk noise, and an optional sinusoidal periodic component. White and random-walk variances are scaled so that their combined standard deviation equals the set jitter parameter ($\sigma_{\text{RJ}}$).
 2. **Event Timestamp Generation:** $N_{\text{events}}$ arrival times are sampled randomly from a uniform distribution across the simulated time window, completely uncorrelated with clock edges.
 3. **Coarse Timestamping:** For each event, the TDC identifies the first subsequent rising edge index $k$.
