@@ -169,11 +169,11 @@ Two global parameters can only be modified directly within the `PARAMETERS` conf
 * **`SEED`** *(default: 12345)*: The initialization seed for the pseudo-random number generator. Modifying this value generates a statistically independent MC realization.
 
 ## Simulation Outputs
-Each simulation run generates status messages in the terminal console, a comprehensive numerical report (displayed in a dedicated UI window and printed to the terminal), and five diagnostic plots.
+Each simulation run generates status messages in the terminal console, a comprehensive numerical report (displayed in a dedicated GUI window and printed to the terminal), and five diagnostic plots.
 
-When running via the GUI, every execution automatically generates a time-stamped text log file inside the `Data_TDC/` directory (created automatically in the root folder if it does not exist). This folder stores the complete numerical report alongside the full list of input parameters used for that specific run.
+When running via the GUI, every execution automatically generates a time-stamped text log file inside the `Data_TDC/` directory (created automatically in the root folder of the scripts if it does not exist). This folder stores the complete numerical report alongside the full list of input parameters used for that specific run.
 
-* **Note:** Diagnostic plots are **not** saved automatically in GUI mode. To save individual figures, click the **Save image...** button in each plot window.
+**Note:** Diagnostic plots are not saved automatically in GUI mode. To save individual figures, click the **Save image...** button in each plot window.
 
 ### The Five Diagnostic Plots
 
