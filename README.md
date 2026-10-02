@@ -40,7 +40,7 @@ This repository contains the following files:
   The core MC simulation engine. It generates the jittered clock signal, simulates the TDC conversion process, computes error statistics, compares results against the analytical RSS prediction model, and generates five output diagnostic plots. It includes a editable parameter block at the top and can be executed independently as a standalone script.
 
 * **`tdc_jitter_gui_def.py`**  
-  The PyQt5-based Graphical User Interface (GUI) that drives the simulation engine. It provides an innteractive window equipped with text boxes, checkboxes, and sliders to adjust simulation inputs. Upon clicking `Run`, the application automatically generates a `Data_TDC/` output folder to store log files (`.txt`) for each run, recording the configuration parameters alongside the resulting numerical report.
+  The PyQt5-based Graphical User Interface (GUI) that drives the simulation engine. It provides an interactive window equipped with text boxes, checkboxes, and sliders to adjust simulation inputs. Upon clicking `Run`, the application automatically generates a `Data_TDC/` output folder to store log files (`.txt`) for each run, recording the configuration parameters alongside the resulting numerical report.
 
 * **`README.md`**  
   This documentation file, providing an overview of the TDC architecture, theoretical error model, experimental motivation (ePIC/dRICH), and scripts usage.
@@ -66,7 +66,7 @@ The GUI provides text boxes, drop-down menus, and sliders to adjust simulation p
 
 1. The main window opens with pre-filled default parameters.
 2. Click **Run** to launch the simulation (execution takes only a few seconds).
-3. Six independent windows will open: one containing the **numerical report** and five displaying **diagnostic plots**, each accompanied by an explanatory caption on the bottom.
+3. Six independent windows will open: one containing the **numerical report** and five displaying **diagnostic plots**, each accompanied by a descriptive caption on the bottom.
 4. Modify any parameters and click **Run** again to observe their immediate effect on the output.
 
 **Note:** The MC pseudo-random number generator uses a fixed seed (`SEED = 12345`). Executing the simulation multiple times with identical settings will yield identical numerical results. To simulate a different random realization, change the `SEED` variable inside `tdc_jitter_sim_def.py`.
@@ -74,7 +74,7 @@ The GUI provides text boxes, drop-down menus, and sliders to adjust simulation p
 ### Standalone Engine
 The core simulation script (`tdc_jitter_sim_def.py`) can also be executed independently without the graphical interface:
 
-1. Open `tdc_jitter_sim_def.py` in a text editor and modify the configuration variables within the `PARAMETERS` block at the top of the file. Clock frequencies must be specified in **Hertz** (e.g., `F_CLK = 400e6` for $400\text{ MHz}$).
+1. Open `tdc_jitter_sim_def.py` in a text editor and modify the configuration variables within the `PARAMETERS` block at the top of the file. Clock frequencies must be specified in **Hertz**.
 2. Run the script from the terminal:
 ```bash
 python3 tdc_jitter_sim_def.py
