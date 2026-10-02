@@ -138,7 +138,7 @@ Expresses the peak-to-peak distortion of the clock signal's duty cycle in picose
 An ideal clock maintains a $50\%$ duty cycle, where high and low states last for exactly half a clock period ($T_{\text{CLK}} / 2$). In physical systems, asymmetries shift the falling edges from their ideal value. In the simulation, falling edges are displaced by $\pm \text{DCD}_{\text{PP}} / 2$.
 
 This effect is active **only** when *Nearest Edge* mode is enabled. Because the TDC assumes falling edges are located exactly at the half-period mark, any duty cycle imbalance introduces a systematic measurement offset for events referenced to a falling edge.
-* **Note:** Ignored when operating in *Rising Edge Only* mode.
+**Note:** Ignored when operating in *Rising Edge Only* mode.
 
 ### Periodic Jitter Amplitude (`PJ_AMP`)
 Models a deterministic, repeating timing disturbance affecting clock edges—equivalent to a sinusoidal phase modulation of the clock arrival times. A typical physical source is cross-talk or supply noise coupled from adjacent circuits operating at a fixed frequency. Unlike random jitter, periodic jitter is deterministic.
