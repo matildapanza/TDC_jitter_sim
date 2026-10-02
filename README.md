@@ -103,7 +103,7 @@ $$\sigma_{\text{total}} = \sqrt{\sigma_{\text{RJ}}^2 + \left(\frac{\text{LSB}}{\
 * For ($\sigma_{\text{RJ}} \approx 7.11\text{ ps}$ default), jitter and quantization contribute roughly equally to the variance ($\sigma^2$), meaning that reducing only one of the two yields minimal improvement in overall resolution.
 
 ### Random-Walk Share of Jitter (`ALPHA_RW`)
-Real-world oscillator jitter is rarely purely uncorrelated from tick to tick. A portion of the phase noise accumulates over time (a *random walk*-like behaviour). This parameter defines how the total jitter power is partitioned:
+Real-world oscillator jitter is rarely purely uncorrelated from tick to tick. A portion of the phase noise accumulates over time (a *random walk*-like behavior). This parameter defines how the total jitter power is partitioned:
 * **`0`:** Every clock tick is displaced **independently** of the others (pure white phase noise).
 * **`1`:** Displacements **accumulate** from tick to tick, modeling a free-running oscillator.
 * **Intermediate values ($0 < \alpha < 1$):** Represents a mixed phase-noise profile.
