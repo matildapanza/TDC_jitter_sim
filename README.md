@@ -109,8 +109,8 @@ $$\sigma_{\text{total}} = \sqrt{\sigma_{\text{RJ}}^2 + \left(\frac{\text{LSB}}{\
 
 ### Random-Walk Share of Jitter (`ALPHA_RW`)
 Real-world oscillator jitter is rarely purely uncorrelated from tick to tick. A portion of the phase noise accumulates over time (a *random walk*). This parameter defines how the total jitter power is partitioned:
-* **`0.0`:** Every clock tick is displaced **independently** of the others (pure white phase noise).
-* **`1.0`:** Displacements **accumulate** from tick to tick, modeling a free-running oscillator.
+* **`0`:** Every clock tick is displaced **independently** of the others (pure white phase noise).
+* **`1`:** Displacements **accumulate** from tick to tick, modeling a free-running oscillator.
 * **Intermediate values ($0 < \alpha < 1$):** Represents a mixed phase-noise profile.
 
 ### TAC Resolution / LSB (`LSB`)
@@ -130,6 +130,50 @@ This Integral Non-Linearity (INL) is modeled as a sinusoidal distortion with a p
 $$\sigma_{\text{total}} = \sqrt{\sigma_{\text{RJ}}^2 + \sigma_q^2 + \frac{\text{INL}^2}{2}}$$
 
 **Note:** The standard analytical formula displayed in the report assumes ideal linearity and does not include INL. When INL is enabled, the simulated resolution $\sigma_{\text{sim}}$ will naturally exceed the basic RSS prediction ($\sigma_{\text{sim}} > \sigma_{\text{RSS}}$). This deviation is expected and highlighted as a note within the graphical user interface.
+
+### Clock Edges Used (`USE_NEAREST_EDGE`)
+Defines which clock edges (transitions) are utilized by the fine stage for time measurements:
+
+* **Rising Edge Only (`False`, default):** the fine stage measures the sub-clock interval from the event timestamp to the next rising edge. The maximum measurable interval corresponds to one full clock period.
+* **Nearest Edge (`True`):** the fine stage measures the time to the **nearest clock edge**, whether rising or falling. This halves the maximum interval to at most $T_{\text{CLK}} / 2$, but introduces sensitivity to **Duty Cycle Distortion (DCD)**.
+
+### Duty Cycle Distortion / DCD (`DCD_PP`)
+Expresses the peak-to-peak distortion of the clock signal's duty cycle in picoseconds ($\text{ps}$).
+
+An ideal clock maintains a $50\%$ duty cycle, where high and low states last for exactly half a clock period ($T_{\text{CLK}} / 2$). In physical systems, asymmetries shift the falling edges from their ideal value. In the simulation, falling edges are displaced by $\pm \text{DCD}_{\text{PP}} / 2$.
+
+This effect is active **only** when *Nearest Edge* mode is enabled. Because the TDC assumes falling edges are located exactly at the half-period mark, any duty cycle imbalance introduces a systematic measurement offset for events referenced to a falling edge.
+* **Note:** Ignored when operating in *Rising Edge Only* mode.
+
+### Periodic Jitter Amplitude (`PJ_AMP`)
+Models a deterministic, repeating timing disturbance affecting clock edges—equivalent to a sinusoidal phase modulation of the clock arrival times. A typical physical source is cross-talk or supply noise coupled from adjacent circuits operating at a fixed frequency. Unlike random jitter, periodic jitter is deterministic.
+
+The parameter specifies the peak amplitude ($\text{PJ}_{\text{amp}}$) in picoseconds ($\text{ps}$). Its RMS contribution ($\text{PJ}_{\text{amp}} / \sqrt{2}$) combines in quadrature with the other uncertainty sources:
+
+$$\sigma_{\text{total}} = \sqrt{\sigma_{\text{RJ}}^2 + \sigma_q^2 + \frac{\text{PJ}_{\text{amp}}^2}{2}}$$
+
+**Note:** The default analytical RSS formula displayed in the report assumes purely random noise and does not include periodic jitter. Enabling periodic jitter will cause the simulated result to exceed the basic RSS prediction ($\sigma_{\text{sim}} > \sigma_{\text{RSS}}$), as indicated in the summary report.
+
+### Periodic Jitter Frequency (`PJ_FREQ`)
+Specifies the repetition rate of the periodic timing disturbance in $\text{MHz}$.
+
+### Number of Events (`N_EVENTS`)
+Sets the total number of MC measurements simulated during a single run. Simulated events arrive at uniformly distributed random instants, completely uncorrelated with clock edges.
+
+Adjusting $N_{\text{events}}$ does not alter the *true* underlying standard deviation ($\sigma$), but improves the precision of its estimate. The relative statistical uncertainty on $\sigma$ scales as:
+
+$$\frac{\delta\sigma}{\sigma} \approx \frac{1}{\sqrt{2 N_{\text{events}}}}$$
+
+Computation time scales linearly with the number of simulated events (a default run of hundreds of thousands of events executes in a few seconds).
+
+### Script-Only Parameters
+
+Two global parameters can only be modified directly within the `PARAMETERS` configuration block at the top of `tdc_jitter_sim_def.py`:
+
+* **`N_CLK_EDGES`** *(default: 400000)*: Sets the total number of generated clock cycles. Simulated event timestamps are distributed randomly across the time span covered by these edges.
+* **`SEED`** *(default: 12345)*: The initialization seed for the pseudo-random number generator. Modifying this value generates a statistically independent MC realization.
+
+
 
 
 
