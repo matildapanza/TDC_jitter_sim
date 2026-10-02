@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PyQt5 GUI for MONTE CARLO TDC SIMULATION (tdc_jitter_sim_def.py)
+PyQt5 GUI FOR MONTE CARLO TDC SIMULATION (tdc_jitter_sim_def.py)
 ----------------------------------------------------------------
 
 REQUIREMENTS
