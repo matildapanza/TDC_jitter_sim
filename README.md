@@ -37,7 +37,7 @@ Effective DCR discrimination can only be achieved with excellent front-end timin
 This repository contains the following files:
 
 * **`tdc_jitter_sim_def.py`**  
-  The core Monte Carlo (MC) simulation engine. It generates the jittered clock signal, simulates the TDC conversion process, computes error statistics, compares results against the analytical RSS prediction model, and generates five output diagnostic plots. It includes a editable parameter block at the top and can be executed independently as a standalone script.
+  The core MC simulation engine. It generates the jittered clock signal, simulates the TDC conversion process, computes error statistics, compares results against the analytical RSS prediction model, and generates five output diagnostic plots. It includes a editable parameter block at the top and can be executed independently as a standalone script.
 
 * **`tdc_jitter_gui_def.py`**  
   The PyQt5-based Graphical User Interface (GUI) that drives the simulation engine. It provides an innteractive window equipped with text boxes, checkboxes, and sliders to adjust simulation inputs. Upon clicking `Run`, the application automatically generates a `Data_TDC/` output folder to store log files (`.txt`) for each run, recording the configuration parameters alongside the resulting numerical report.
