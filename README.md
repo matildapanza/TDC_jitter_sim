@@ -225,7 +225,7 @@ The individual variance components are summed in quadrature because the underlyi
 2. **Event Timestamp Generation:** $N_{\text{events}}$ arrival times are sampled randomly from a uniform distribution across the simulated time window, completely uncorrelated with clock edges.
 3. **Coarse Timestamping:** For each event, the TDC identifies the first subsequent rising edge index $k$.
 4. **Fine Interval Measurement:** The residual interval between the event and edge $k$ is subjected to optional INL distortion, then rounded to the midpoint of its corresponding LSB bin.
-5. **Reported Time Calculation:** $t_{\text{reported}} = k \cdot T_{\text{CLK}} - t_{\text{fine\_rounded}}$. Because the TDC assumes an **ideal** clock tick location ($k \cdot T_{\text{CLK}}$) rather than the physical displaced arrival time, clock edge displacements translate directly into measurement errors.
+5. **Reported Time Calculation:** $t_{\text{reported}} = k \cdot T_{\text{CLK}} - t_{\text{fine, rounded}}$. Because the TDC assumes an **ideal** clock tick location ($k \cdot T_{\text{CLK}}$) rather than the physical displaced arrival time, clock edge displacements translate directly into measurement errors.
 6. **Error Extraction:** $e_i = t_{\text{reported}} - t_{\text{true}}$, with the global mean offset subtracted to eliminate systematic calibration bias.
 
 **Note:** When *Nearest Edge* mode is active, falling edges are inserted at $t = k \cdot T_{\text{CLK}} + T_{\text{CLK}}/2 + \text{DCD}_{\text{PP}}/2$. The TDC uses the first arriving edge of either transition type while maintaining the assumption of ideal, symmetric half-period intervals.
