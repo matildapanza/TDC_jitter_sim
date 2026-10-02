@@ -20,7 +20,7 @@ The overall timing resolution of the TDC system is fundamentally limited by two 
 
 $$\text{Quantization Noise Floor} = \frac{\text{LSB}}{\sqrt{12}} \quad (\approx 7.22\text{ ps for } \text{LSB} = 25\text{ ps})$$
 
-For every simulated event, the software calculates the difference between the reported time and the true time, yielding the measurement error. Any constant systematic offset common to all events is removed, as it represents a calibratable quantity rather than an intrinsic uncertainty. The remaining random scatter is quantified by a single parameter, $$\sigma$$, representing the typical magnitude of the measurement error (in picoseconds).
+For every simulated event, the software calculates the difference between the reported time and the true time, yielding the measurement error. Any constant systematic offset common to all events is removed, as it represents a quantity that can be calibrated rather than an intrinsic uncertainty. The remaining random scatter is quantified by a single parameter, $$\sigma$$, representing the typical magnitude of the measurement error (in picoseconds).
 
 This simulator allows users to analyze how the overall TDC timing resolution is degraded depending on the specific type of clock jitter introduced and the presence of TAC calibration errors.
 
