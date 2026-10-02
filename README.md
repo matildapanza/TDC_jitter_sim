@@ -222,7 +222,24 @@ The individual variance components are summed in quadrature because the underlyi
 
 **Note:** When *Nearest Edge* mode is active, falling edges are inserted at $t = k \cdot T_{\text{CLK}} + T_{\text{CLK}}/2 + \text{DCD}_{\text{PP}}/2$. The TDC uses the first arriving edge of either transition type while maintaining the assumption of ideal, symmetric half-period intervals.
 
+## Suggested Test Cases
+ 
+For each guided example, only the specified parameters need to be adjusted (all other settings remain at their default values). Each scenario details the plot expected features alongside their underlying physical interpretation.
 
+### Example 1 – Only rounding
+* **Input:** RJ jitter = 0.
+* **Output:** `sigma_sim ≈ 7.23 ps`; peak-to-peak exactly 25 ps (= LSB), `|err| < 2 sig = 100 %`, a **flat-topped box** in plot 1 that does not follow the theoretical prediction.
+* **Explanation:** with a perfect clock the only error is the rounding to the nearest 25 ps step, uniformly spread over one step.
+
+### Example 2 – Dither effect
+* **Input:** defaults; look at the **Dither effect** plot.
+* **Output:** the first panel (jitter = 0.5 ps) is a box, the last (jitter = 20 ps) a Gaussian.
+* **Explanation:** random noise smooths the steps of the rounding. If you raise the LSB to 100 ps and run again: the box persists up to larger jitters, because more random noise is needed to smooth a bigger step.
+
+### Example 2 – Duty cycle distortion, two peaks
+* **Input:** edge mode *Nearest edge*, jitter = 2, LSB = 5, DCD = 40.
+* **Output:** `sigma_sim ≈ 10.3 ps` with a formula value of about 20.2 ps (`dev. vs RSS ≈ −49 %`); the histogram and the right panel of the *Duty cycle effect* plot show two separate peaks about 20 ps apart.
+* **Explanation:** events measured against a rising edge and against a falling edge are read with a relative shift of `DCD/2`.
 
 
 
