@@ -3,7 +3,7 @@
 ## Overview
 This software provides a Monte Carlo (MC) simulation of a coarse-fine Time-to-Digital Converter (TDC) driven by a jittered clock, equipped with an interactive Graphical User Interface (GUI) to easily configure parameters and analyze results.
 
-By simulating hundreds of thousands of measurements, the tool compares each measured timestamp against its known true value, characterizing the magnitude and statistical dispersion of the resulting measurement errors. To validate the simulation framework, empirical results are systematically compared against an analytical pen-and-paper prediction model.
+By simulating hundreds of thousands of measurements, the tool compares each measured timestamp against its known true value, characterizing the magnitude and statistical dispersion of the resulting measurement errors. To validate the simulation framework, empirical results are systematically compared against an analytical prediction model.
 
 ## TDC Architecture and Measurement Mechanism
 A TDC is an electronic device designed to register an event (such as a particle hitting a sensor connected to the TDC) and output a digital number representing the exact time at which it occurred.
