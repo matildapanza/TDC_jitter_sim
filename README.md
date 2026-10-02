@@ -1,7 +1,7 @@
 # TDC Jitter Simulator
 
 ## Overview
-This software provides a Monte Carlo simulation of a coarse-fine Time-to-Digital Converter (TDC) driven by a jittered clock, equipped with an interactive Graphical User Interface (GUI) to easily configure parameters and analyze results.
+This software provides a Monte Carlo (MC) simulation of a coarse-fine Time-to-Digital Converter (TDC) driven by a jittered clock, equipped with an interactive Graphical User Interface (GUI) to easily configure parameters and analyze results.
 
 By simulating hundreds of thousands of measurements, the tool compares each measured timestamp against its known true value, characterizing the magnitude and statistical dispersion of the resulting measurement errors. To validate the simulation framework, empirical results are systematically compared against an analytical pen-and-paper prediction model.
 
