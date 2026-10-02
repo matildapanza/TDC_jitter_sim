@@ -238,9 +238,5 @@ For each guided example, only the specified parameters need to be adjusted (all 
 
 ### Example 2 – Duty cycle distortion, two peaks
 * **Input:** edge mode *Nearest edge*, jitter = 2, LSB = 5, DCD = 40.
-* **Output:** `sigma_sim ≈ 10.3 ps` with a formula value of about 20.2 ps (`dev. vs RSS ≈ −49 %`); the histogram and the right panel of the *Duty cycle effect* plot show two separate peaks about 20 ps apart.
+* **Output:** `sigma_sim ≈ 10.3 ps` and `dev. vs RSS ≈ −49 %`; the histogram and the right panel of the *Duty cycle effect* plot show two separate peaks about 20 ps apart.
 * **Explanation:** events measured against a rising edge and against a falling edge are read with a relative shift of `DCD/2`.
-
-
-
-
