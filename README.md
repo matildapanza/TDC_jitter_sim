@@ -87,10 +87,10 @@ python3 tdc_jitter_sim_def.py
 Below is a detailed breakdown of the configurable simulation parameters and their physical meaning within the TDC model.
 
 ### Clock Frequency (`F_CLK`)
-The number of clock ticks per second ($f_{\text{CLK}}$). The clock period ($T_{\text{CLK}} = 1 / f_{\text{CLK}}$) defines the interval between two consecutive ticks. The coarse stage counts these clock cycles to establish the primary timestamp.
+The number of clock ticks per second ($f_{\text{CLK}}$). The clock period ($T_{\text{CLK}} = 1 / f_{\text{CLK}}$) defines the interval between two consecutive ticks. The coarse stage counts these clock cycles to establish the main timestamp.
 
 ### Random Clock Jitter (`SIGMA_RJ`)
-The root-mean-square ($\sigma_{\text{RJ}}$) magnitude of the random temporal displacement of clock edges from their ideal arrival times, expressed in picoseconds ($\text{ps}$). 
+The RMS ($\sigma_{\text{RJ}}$) magnitude of the random temporal displacement of clock edges from their ideal arrival times, expressed in picoseconds ($\text{ps}$). 
 
 In a physical system, jitter originates from the reference oscillator and distribution tree electronics. Because the TDC assumes an ideal, perfectly timed clock, a tick arriving $5\text{ ps}$ late introduces a direct $5\text{ ps}$ error to every measurement referencing that edge. This is typically the dominant parameter in timing performance.
 
