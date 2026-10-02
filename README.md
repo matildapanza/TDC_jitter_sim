@@ -87,7 +87,49 @@ python3 tdc_jitter_sim_def.py
 
 **Note:** When executed directly from the command line, the script does **not** create log files inside the `Data_TDC/` folder; output file logging is handled exclusively by the GUI.
 
+## Simulation Parameters
+Below is a detailed breakdown of the configurable simulation parameters and their physical meaning within the TDC model.
 
+### Clock Frequency (`F_CLK`)
+The number of clock ticks per second ($f_{\text{CLK}}$). The clock period ($T_{\text{CLK}} = 1 / f_{\text{CLK}}$) defines the interval between two consecutive ticks. The coarse stage counts these clock cycles to establish the primary timestamp.
+
+
+### Random Clock Jitter (`SIGMA_RJ`)
+The root-mean-square ($\sigma_{\text{RJ}}$) magnitude of the random temporal displacement of clock edges from their ideal arrival times, expressed in picoseconds ($\text{ps}$). 
+
+In a physical system, jitter originates from the reference oscillator and distribution tree electronics. Because the TDC assumes an ideal, perfectly timed clock, a tick arriving $5\text{ ps}$ late introduces a direct $5\text{ ps}$ error to every measurement referencing that edge. This is typically the dominant parameter in timing performance.
+
+The total expected error is calculated using the **Root-Sum-of-Squares (RSS)** model combining jitter and quantization noise:
+
+$$\sigma_{\text{total}} = \sqrt{\sigma_{\text{RJ}}^2 + \left(\frac{\text{LSB}}{\sqrt{12}}\right)^2}$$
+
+* For ($\sigma_{\text{RJ}} \ll \text{LSB}$), the total error is dominated by the quantization noise floor.
+* For ($\sigma_{\text{RJ}} > \text{LSB}$), the error scales linearly with jitter, and the error distribution converges to a Gaussian curve.
+* For ($\sigma_{\text{RJ}} \approx 7.11\text{ ps}$ default), jitter and quantization contribute roughly equally to the variance ($\sigma^2$), meaning that reducing only one of the two yields minimal improvement in overall resolution.
+
+### Random-Walk Share of Jitter (`ALPHA_RW`)
+Real-world oscillator jitter is rarely purely uncorrelated from tick to tick. A portion of the phase noise accumulates over time (a *random walk*). This parameter defines how the total jitter power is partitioned:
+* **`0.0`:** Every clock tick is displaced **independently** of the others (pure white phase noise).
+* **`1.0`:** Displacements **accumulate** from tick to tick, modeling a free-running oscillator.
+* **Intermediate values ($0 < \alpha < 1$):** Represents a mixed phase-noise profile.
+
+### TAC Resolution / LSB (`LSB`)
+The ($\text{LSB}$), expressed in $\text{ps}$, represents the finest step size resolved by the TAC during the fine measurement stage. A smaller LSB corresponds to a higher-resolution digital scale.
+
+The fine time interval is rounded to the nearest integer multiple of the LSB. This process introduces quantization noise distributed uniformly over one LSB step, with a characteristic RMS value of:
+
+$$\sigma_q = \frac{\text{LSB}}{\sqrt{12}} \quad (\approx 7.22\text{ ps for } \text{LSB} = 25\text{ ps})$$
+
+For small LSB, quantization noise becomes negligible and the resolution is limited solely by the clock jitter($\sigma \rightarrow \sigma_{\text{RJ}}$). On the other hand, for large LSB, quantization dominates ($\sigma \rightarrow \text{LSB}/\sqrt{12}$), giving the error distribution a rectangular shape of width equal to $1\text{ LSB}$. 
+
+### TAC Non-Linearity (`INL_AMP`)
+Models physical defects in the TAC conversion circuit. Inside the TAC, the time interval is converted into a voltage ramp. If the ramp exhibits non-linearities, the measured interval will be slightly overestimated or underestimated depending on where the event falls within the clock cycle. 
+
+This Integral Non-Linearity (INL) is modeled as a sinusoidal distortion with a peak amplitude $\text{INL}_{\text{amp}}$ in picoseconds. It contributes an independent RMS error component of $\text{INL}/\sqrt{2}$, expanding the theoretical RSS model to:
+
+$$\sigma_{\text{total}} = \sqrt{\sigma_{\text{RJ}}^2 + \sigma_q^2 + \frac{\text{INL}^2}{2}}$$
+
+**Note:** The standard analytical formula displayed in the report assumes ideal linearity and does not include INL. When INL is enabled, the simulated resolution $\sigma_{\text{sim}}$ will naturally exceed the basic RSS prediction ($\sigma_{\text{sim}} > \sigma_{\text{RSS}}$). This deviation is expected and highlighted as a note within the graphical user interface.
 
 
 
