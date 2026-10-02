@@ -173,14 +173,62 @@ Two global parameters can only be modified directly within the `PARAMETERS` conf
 * **`N_CLK_EDGES`** *(default: 400000)*: Sets the total number of generated clock cycles. Simulated event timestamps are distributed randomly across the time span covered by these edges.
 * **`SEED`** *(default: 12345)*: The initialization seed for the pseudo-random number generator. Modifying this value generates a statistically independent MC realization.
 
+## Simulation Outputs
+Each simulation run generates status messages in the terminal console, a comprehensive numerical report (displayed in a dedicated UI window and printed to the terminal), and five diagnostic plots.
+
+When running via the GUI, every execution automatically generates a time-stamped text log file inside the `Data_TDC/` directory (created automatically in the root folder if it does not exist). This folder stores the complete numerical report alongside the full list of input parameters used for that specific run.
+
+* **Note:** Diagnostic plots are **not** saved automatically in GUI mode. To save individual figures, click the **Save image...** button in each plot window.
+
+### The Five Diagnostic Plots
+
+#### Plot 1 – Error Distribution
+Displays a normalized probability density histogram of all simulated measurement errors ($\text{ps}$).
+
+The **red dashed curve** represents the theoretical Gaussian distribution with a standard deviation ($\sigma_{\text{TOT}}$) predicted by the analytical RSS formula: close agreement between the histogram bars and the red dashed curve confirms that measurement errors are normally distributed and align with analytical predictions.
+
+#### Plot 2 – Dither Effect
+Presents four side-by-side histograms comparing error distributions across four distinct clock jitter levels ($0.5$, $2.0$, $7.11$, and $20.0\text{ ps}$), keeping all other parameters fixed to user indication. Panel titles indicate the specific jitter level and resulting total resolution ($\sigma$).
+
+At negligible jitter, the error is dominated by quantization, producing a flat-topped, box-like histogram. As jitter increases, phase noise smooths out the quantization steps, causing the distribution to converge to a more Gaussian-like curve. This beneficial smoothing effect of random noise on digital quantization is known as **dither effect**.
+
+#### Plot 3 – Error vs. Jitter
+Maps the evolution of total timing resolution ($\sigma$) as random clock jitter increases continuously from $0.5\text{ ps}$ to $30.0\text{ ps}$.
+
+#### Plot 4 – Duty Cycle Effect
+Displays two comparative histograms evaluating the two clock transition modes:
+
+* **Left Panel (Rising Edge Only):** Duty Cycle Distortion (DCD) has no impact on timing accuracy.
+* **Right Panel (Nearest Edge):** DCD displaces falling edges, causing the error distribution to split into two distinct peaks.
+
+* **Note:** This diagnostic plot **always displays both edge modes side by side** using your active DCD, jitter, and LSB settings, regardless of which mode is currently selected for the main simulation run.
+
+#### Plot 5 – Error Spectrum (FFT Analysis)
+Plots the frequency spectrum derived from a Fast Fourier Transform (FFT) analysis of the measurement error sequence, ordered chronologically.
+
+The horizontal axis indicates normalized frequency (cycles per measurement, spanning $0$ to $0.5$), while the logarithmic vertical axis represents spectral amplitude ($\text{ps}$).
+
+This analysis allows to identify periodic oscillations or deterministic noise patterns embedded within the measurement error sequence.
+
+## Analytical Prediction Model
+
+The simulation report compares empirical MC results against a theoretical **analytical error budget**:
+
+$$\sigma_{\text{TOT}} = \sqrt{\sigma_{\text{RJ}}^2 + \sigma_{\text{DCD}}^2 + \sigma_q^2}$$
+
+The individual variance components are summed in quadrature because the underlying error mechanisms are statistically independent (RSS model).
 
 
+### Step-by-Step Simulation Workflow
 
+1. **Jittered Clock Generation:** Rising clock edges arrive at timestamps $t_k = k \cdot T_{\text{CLK}} + \varphi(k)$, where $\varphi(k)$ represents edge displacement composed of white phase noise, random-walk noise, and an optional sinusoidal periodic component. White and random-walk variances are scaled so that their combined standard deviation equals the set jitter parameter ($\sigma_{\text{RJ}}$).
+2. **Event Timestamp Generation:** $N_{\text{events}}$ arrival times are sampled randomly from a uniform distribution across the simulated time window, completely uncorrelated with clock edges.
+3. **Coarse Timestamping:** For each event, the TDC identifies the first subsequent rising edge index $k$.
+4. **Fine Interval Measurement:** The residual interval between the event and edge $k$ is subjected to optional INL distortion, then rounded to the midpoint of its corresponding LSB bin.
+5. **Reported Time Calculation:** $t_{\text{reported}} = k \cdot T_{\text{CLK}} - t_{\text{fine\_rounded}}$. Because the TDC assumes an **ideal** clock tick location ($k \cdot T_{\text{CLK}}$) rather than the physical displaced arrival time, clock edge displacements translate directly into measurement errors.
+6. **Error Extraction:** $e_i = t_{\text{reported}} - t_{\text{true}}$, with the global mean offset subtracted to eliminate systematic calibration bias.
 
-
-
-
-
+**Note:** When *Nearest Edge* mode is active, falling edges are inserted at $t = k \cdot T_{\text{CLK}} + T_{\text{CLK}}/2 + \text{DCD}_{\text{PP}}/2$. The TDC uses the first arriving edge of either transition type while maintaining the assumption of ideal, symmetric half-period intervals.
 
 
 
