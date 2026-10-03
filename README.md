@@ -180,12 +180,12 @@ When running via the GUI, every execution automatically generates a time-stamped
 #### Plot 1 – Error Distribution
 Displays a normalized probability density histogram of all simulated measurement errors ($\text{ps}$).
 
-The **red dashed curve** represents the theoretical Gaussian distribution with a standard deviation ($\sigma_{\text{TOT}}$) predicted by the analytical RSS formula: close agreement between the histogram bars and the red dashed curve confirms that measurement errors are normally distributed and align with analytical predictions.
+The red dashed curve represents the theoretical Gaussian distribution with a standard deviation ($\sigma_{\text{TOT}}$) predicted by the analytical RSS formula: close agreement between the histogram bars and the red dashed curve confirms that measurement errors are normally distributed and align with analytical predictions.
 
 #### Plot 2 – Dither Effect
 Presents four side-by-side histograms comparing error distributions across four distinct clock jitter levels ($0.5$, $2.0$, $7.11$, and $20.0\text{ ps}$), keeping all other parameters fixed to user indication. Panel titles indicate the specific jitter level and resulting total resolution ($\sigma$).
 
-At negligible jitter, the error is dominated by quantization, producing a flat-topped, box-like histogram. As jitter increases, phase noise smooths out the quantization steps, causing the distribution to converge to a more Gaussian-like curve. This beneficial smoothing effect of random noise on digital quantization is known as **dither effect**.
+At negligible jitter, the error is dominated by quantization, producing a flat-topped, box-like histogram. As jitter increases, phase noise smooths out the quantization steps, causing the distribution to converge to a more Gaussian-like curve. This beneficial smoothing effect of random noise on digital quantization is known as *dither effect*.
 
 #### Plot 3 – Error vs. Jitter
 Maps the evolution of total timing resolution ($\sigma$) as random clock jitter increases continuously from $0.5\text{ ps}$ to $30.0\text{ ps}$.
@@ -193,10 +193,10 @@ Maps the evolution of total timing resolution ($\sigma$) as random clock jitter 
 #### Plot 4 – Duty Cycle Effect
 Displays two comparative histograms evaluating the two clock transition modes:
 
-* **Left Panel (Rising Edge Only):** Duty Cycle Distortion (DCD) has no impact on timing accuracy.
+* **Left Panel (Rising Edge Only):** DCD has no impact on timing accuracy.
 * **Right Panel (Nearest Edge):** DCD displaces falling edges, causing the error distribution to split into two distinct peaks.
 
-* **Note:** This diagnostic plot **always displays both edge modes side by side** using your active DCD, jitter, and LSB settings, regardless of which mode is currently selected for the main simulation run.
+* **Note:** This diagnostic plot always displays both edge modes side by side using your active DCD, jitter, and LSB settings, regardless of which mode is currently selected for the main simulation run.
 
 #### Plot 5 – Error Spectrum (FFT Analysis)
 Plots the frequency spectrum derived from a Fast Fourier Transform (FFT) analysis of the measurement error sequence, ordered chronologically.
@@ -217,7 +217,7 @@ The individual variance components are summed in quadrature because the underlyi
 2. **Event Timestamp Generation:** $N_{\text{events}}$ arrival times are sampled randomly from a uniform distribution across the simulated time window, completely uncorrelated with clock edges.
 3. **Coarse Timestamping:** For each event, the TDC identifies the first subsequent rising edge index $k$.
 4. **Fine Interval Measurement:** The residual interval between the event and edge $k$ is subjected to optional INL distortion, then rounded to the midpoint of its corresponding LSB bin.
-5. **Reported Time Calculation:** $t_{\text{reported}} = k \cdot T_{\text{CLK}} - t_{\text{fine, rounded}}$. Because the TDC assumes an **ideal** clock tick location ($k \cdot T_{\text{CLK}}$) rather than the physical displaced arrival time, clock edge displacements translate directly into measurement errors.
+5. **Reported Time Calculation:** $t_{\text{reported}} = k \cdot T_{\text{CLK}} - t_{\text{fine, rounded}}$. Because the TDC assumes an ideal clock tick location ($k \cdot T_{\text{CLK}}$) rather than the physical displaced arrival time, clock edge displacements translate directly into measurement errors.
 6. **Error Extraction:** $e_i = t_{\text{reported}} - t_{\text{true}}$, with the global mean offset subtracted to eliminate systematic calibration bias.
 
 **Note:** When *Nearest Edge* mode is active, falling edges are inserted at $t = k \cdot T_{\text{CLK}} + T_{\text{CLK}}/2 + \text{DCD}_{\text{PP}}/2$. The TDC uses the first arriving edge of either transition type while maintaining the assumption of ideal, symmetric half-period intervals.
@@ -228,11 +228,11 @@ For each guided example, only the specified parameters need to be adjusted (all 
 
 ### Example 1 – Only rounding
 * **Input:** RJ jitter = 0.
-* **Output:** `sigma_sim ≈ 7.23 ps`; peak-to-peak exactly 25 ps (= LSB), `|err| < 2 sig = 100 %`, a **flat-topped box** in plot 1 that does not follow the theoretical prediction.
+* **Output:** `sigma_sim ≈ 7.23 ps`; peak-to-peak exactly 25 ps (= LSB), `|err| < 2 sig = 100 %`, a flat-topped box in the Error Distribution plot that does not follow the theoretical prediction.
 * **Explanation:** with a perfect clock the only error is the rounding to the nearest 25 ps step, uniformly spread over one step.
 
 ### Example 2 – Dither effect
-* **Input:** defaults; look at the **Dither effect** plot.
+* **Input:** defaults; look at the Dither effect plot.
 * **Output:** the first panel (jitter = 0.5 ps) is a box, the last (jitter = 20 ps) a Gaussian.
 * **Explanation:** random noise smooths the steps of the rounding. If you raise the LSB to 100 ps and run again: the box persists up to larger jitters, because more random noise is needed to smooth a bigger step.
 
